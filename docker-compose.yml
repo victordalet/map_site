@@ -1,0 +1,36 @@
+services:
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      - web
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build:
+      context: ./src
+    container_name: api
+    ports:
+      - ${API_PORT}:5000
+    networks:
+      - web
+    environment:
+      DB_NAME_MYSQL: ${MYSQL_DATABASE}
+      HOST_MYSQL: ${HOST_MYSQL}
+      PASSWORD_MYSQL: ${MYSQL_PASSWORD}
+      USER_MYSQL: ${MYSQL_USER}
+      MYSQL_PORT: ${MYSQL_PORT}
+
+
+networks:
+  web:
+    external: true

@@ -1,0 +1,57 @@
+services:
+
+  reverse-proxy:
+    image: traefik:v2.4
+    container_name: traefik
+    ports:
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik.toml:/etc/traefik/traefik.toml
+      - acme.json:/acme.json
+    labels:
+      - "traefik.http.middlewares.strip-www.redirectregex.regex=^https?://(www\\.)(.+)"
+      - "traefik.http.middlewares.strip-www.redirectregex.replacement=https://$${2}"
+      - "traefik.http.middlewares.strip-www.redirectregex.permanent=true"
+    restart: always
+    networks:
+      - web
+
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+    networks:
+      - web
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build:
+      context: ./src
+    container_name: api
+    networks:
+      - web
+    environment:
+      DB_NAME_MYSQL: ${MYSQL_DATABASE}
+      HOST_MYSQL: ${HOST_MYSQL}
+      PASSWORD_MYSQL: ${MYSQL_PASSWORD}
+      USER_MYSQL: ${MYSQL_USER}
+      MYSQL_PORT: ${MYSQL_PORT}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`apibmap.c2smr.fr`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+
+networks:
+    web:
+        external: true
