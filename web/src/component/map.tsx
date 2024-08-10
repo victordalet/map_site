@@ -17,12 +17,11 @@ export class MapComponents extends React.Component<{ dataCoordinate: Coordinate[
 
         return (
             <div style={{
-                height: '40vh',
-                width: '80vw',
-                marginLeft: '-10%',
-                borderRadius: '20px',
+                height: '1OOvh',
+                width: '100vw',
                 overflow: 'hidden',
-                border: '2px solid #000'
+                position: 'relative',
+                zIndex: 1
             }}>
                 <MapContainer center={[44.6, 2.34]} zoom={6} scrollWheelZoom={false}>
                     <TileLayer
