@@ -8,11 +8,11 @@ export class MapView extends React.Component <ViewProps> {
         return (
             <div className={"map"}>
                 <div className={"add-container"}>
-                    <TextField id="outlined-basic" label="City" variant="outlined" />
-                    <h2>Positions : </h2>
+                    <h2>Add city : </h2>
+                    <TextField id="outlined-basic" label="City" variant="outlined"/>
                     <Button variant="contained">Add</Button>
                 </div>
-               <MapComponents dataCoordinate={[{lat: 48.8566, long: 2.3522, city: 'Paris'}, {lat: 51.5074, long: 0.1278, city: 'London'}, {lat: 40.7128, long: -74.0060, city: 'New York'}]}/>
+                <MapComponents dataCoordinate={[{lat: 48.8566, long: 2.3522, city: 'Paris'}, {lat: 51.5074, long: 0.1278, city: 'London'}, {lat: 40.7128, long: -74.0060, city: 'New York'}]}/>
             </div>
         );
     }

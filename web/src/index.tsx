@@ -7,7 +7,7 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import './sass/index.scss';
 
 
-import {Map, Log} from './app/provider';
+import {Map, Log, Rank} from './app/provider';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -21,6 +21,7 @@ root.render(
                 <Routes>
                     <Route path={"*"} element={<Log/>}></Route>
                     <Route path={"/map"} element={<Map/>}></Route>
+                    <Route path={"/rank"} element={<Rank/>}></Route>
                 </Routes>
             </BrowserRouter>
         </Provider>

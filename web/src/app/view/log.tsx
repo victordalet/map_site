@@ -1,12 +1,33 @@
 import React from "react";
 import {ViewProps} from "../types/log";
-import Login, {Logo} from '@react-login-page/base';
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 
 export class LogView extends React.Component <ViewProps> {
     render() {
-        return(
-            <Login style={{ height: '100vh' }} ><Logo> </Logo></Login>
+        return (
+            <div className={"container-page"}>
+                <Button
+                    onClick={()=> {
+                        document.location = '/rank';
+                    }}
+                    variant="contained"
+                        className={"button-rank"}>Discover the ranking</Button>
+                <div className={"wrapper-log-in"}>
+                    <h2>Log in</h2>
+                    <TextField id="outlined-basic" className={"username-login"} label="Pseudo" variant="outlined"/>
+                    <TextField id="outlined-basic" className={"password-login"} label="Password" variant="outlined"/>
+                    <Button variant="contained" className={"button-login"}>Log in</Button>
+                </div>
+                <div className={"wrapper-register"}>
+                    <h2>Register</h2>
+                    <TextField id="outlined-basic" className={"username-login"} label="Pseudo" variant="outlined"/>
+                    <TextField id="outlined-basic" className={"password-register"} label="Password" variant="outlined"/>
+                    <TextField id="outlined-basic" className={"city-register"} label="City" variant="outlined"/>
+                    <Button variant="contained" className={"button-register"} >Register</Button>
+                </div>
+            </div>
         );
     }
 }
