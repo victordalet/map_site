@@ -31,6 +31,15 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
 
 
+  front-web:
+    build:
+      context: web
+    ports:
+      - ${FRONT_PORT}:3000
+    networks:
+      - web
+
+
 networks:
   web:
     external: true

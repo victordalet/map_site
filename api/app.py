@@ -47,6 +47,7 @@ def register():
         username = data["user"]
         password = data["password"]
         city = data["city"]
+        print(password, city, username)
         response = requests.get(
             f"https://nominatim.openstreetmap.org/search?addressdetails=1&q={city.replace(' ', '+')}&format=json")
         response = response.json()
@@ -56,6 +57,7 @@ def register():
         h = hashlib.new('sha256')
         h.update(password.encode())
         password = h.hexdigest()
+        print(password, token, city, lat, lon, username)
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO user (name, password, token, latitude, longitude) VALUES (%s, %s, %s, %s, %s)",
@@ -65,7 +67,7 @@ def register():
         cur.close()
         return jsonify({"token": token, "message": "User registered"})
     except Exception as e:
-        return jsonify({"message": "Error registering user"})
+        return jsonify({"message": f"Error {e}"})
 
 
 @app.route("/login", methods=["POST"])
@@ -164,14 +166,14 @@ def insert_pos():
         lon = response[0]["lon"]
         token = request.headers.get("Authorization")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT name FROM user WHERE token = %s", (token,))
+        cur.execute("SELECT name, latitude, longitude FROM user WHERE token = %s", (token,))
         user = cur.fetchone()
         if not user:
             return jsonify({"message": "User not found"})
-        user = user[0]
+        points = (abs(user[0][1] - lat) + abs(user[0][2] - lon)) * 100 + 1
         cur.execute(
             "INSERT INTO position (user, latitude, longitude,points) VALUES (%s, %s, %s, %s)",
-            (user, lat, lon, data["points"])
+            (user[0][0], lat, lon, points)
         )
         mysql.connection.commit()
         cur.close()

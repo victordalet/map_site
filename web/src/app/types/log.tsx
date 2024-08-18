@@ -1,6 +1,8 @@
 import ViewModel from '../view-model/log';
 
 export interface ViewProps {
+    register: () => void;
+    login: () => void;
 }
 
 export interface ControllerProps {
@@ -8,3 +10,8 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {}
+
+
+export interface registerResponse {
+    token: string;
+}

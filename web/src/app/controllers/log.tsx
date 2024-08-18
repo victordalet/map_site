@@ -1,8 +1,8 @@
-
 import React, {Component} from "react";
 import {ControllerProps, ControllerState} from "../types/log";
 import {observer} from "mobx-react";
 import {LogView} from "../view/log";
+import {LogModel} from "../model/log";
 
 @observer
 export default class LogController extends Component<
@@ -11,8 +11,12 @@ export default class LogController extends Component<
 > {
 
 
+    model: LogModel = new LogModel();
+
+
     render() {
-        // eslint-disable-next-line react/jsx-no-undef
-        return <LogView/>;
+        return <LogView
+            register={this.model.register}
+            login={this.model.login}/>;
     }
 }

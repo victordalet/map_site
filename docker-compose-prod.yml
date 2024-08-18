@@ -49,8 +49,20 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=Host(`apibmap.c2smr.fr`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.apibmap.rule=Host(`apibmap.c2smr.fr`)"
+      - "traefik.http.routers.apibmap.entrypoints=websecure"
+
+  front-web:
+    build:
+      context: web
+    ports:
+      - ${FRONT_PORT}:3000
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webbmap.rule=Host(`bmap.c2smr.fr`)"
+      - "traefik.http.routers.webbmap.entrypoints=websecure"
 
 networks:
     web:
