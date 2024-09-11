@@ -21,4 +21,14 @@
     height: 100vh;
 }
 
-$background-color: linear-gradient(to bottom right, #3333b9, pink);
+$background-color: linear-gradient(to bottom right, #e773A2, #8D5375);
+
+* {
+    font-family: "Fredoka", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+

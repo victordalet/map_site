@@ -36,7 +36,6 @@ export class LogModel {
         if (userNameItem === null || passwordItem === null || cityItem === null) {
             return;
         }
-        console.log(userNameItem.value, passwordItem.value, cityItem.value);
         const response = await fetch(this.apiPath + 'register', {
             method: 'POST',
             headers: {
@@ -50,7 +49,7 @@ export class LogModel {
         });
         const data: registerResponse = await response.json();
         window.localStorage.setItem('token', data.token);
-        //window.location.href = '/map';
+        window.location.href = '/map';
         return data;
     }
 

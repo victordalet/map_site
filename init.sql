@@ -7,14 +7,6 @@ create table user(
     longitude real not null
 );
 
-/*
-create table position(
-    id integer primary key AUTO_INCREMENT,
-    name text not null,
-    points integer not null
-);
-*/
-
 
 create table city(
     id integer primary key AUTO_INCREMENT,

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {ControllerProps, ControllerState} from "../types/map";
 import {observer} from "mobx-react";
 import {MapView} from "../view/map";
+import {MapModel} from "../model/map";
 
 @observer
 export default class MapController extends Component<
@@ -10,8 +11,24 @@ export default class MapController extends Component<
 > {
 
 
+    model: MapModel = new MapModel();
+
+    state: ControllerState = {
+        data: []
+    };
+
+
+    constructor(props: ControllerProps) {
+        super(props);
+        this.model.getPosition().then((data) => {
+            this.setState({data: data});
+        });
+    }
+
+
     render() {
-        // eslint-disable-next-line react/jsx-no-undef
-        return <MapView/>;
+        return <MapView
+            addPosition={this.model.addPosition}
+            data={this.state.data}/>;
     }
 }

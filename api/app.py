@@ -30,7 +30,6 @@ app.config["MYSQL_DB"] = sys.argv[1]
 app.config["MYSQL_HOST"] = sys.argv[2]
 app.config["MYSQL_PASSWORD"] = sys.argv[3]
 app.config["MYSQL_USER"] = sys.argv[4]
-app.config["MYSQL_PORT"] = int(sys.argv[5])
 
 mysql = MySQL(app)
 
@@ -47,7 +46,6 @@ def register():
         username = data["user"]
         password = data["password"]
         city = data["city"]
-        print(password, city, username)
         response = requests.get(
             f"https://nominatim.openstreetmap.org/search?addressdetails=1&q={city.replace(' ', '+')}&format=json")
         response = response.json()
@@ -57,16 +55,21 @@ def register():
         h = hashlib.new('sha256')
         h.update(password.encode())
         password = h.hexdigest()
-        print(password, token, city, lat, lon, username)
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO user (name, password, token, latitude, longitude) VALUES (%s, %s, %s, %s, %s)",
             (username, password, token, lat, lon)
         )
         mysql.connection.commit()
+        cur.execute(
+            "insert into city(user,latitude,longitude,points) values(%s,%s,%s,%s)",
+            (username, lat, lon, 1)
+        )
+        mysql.connection.commit()
         cur.close()
         return jsonify({"token": token, "message": "User registered"})
     except Exception as e:
+        print(e)
         return jsonify({"message": f"Error {e}"})
 
 
@@ -129,8 +132,10 @@ def rank():
     try:
         cur = mysql.connection.cursor()
         cur.execute("SELECT user, SUM(points) as points FROM city GROUP BY user")
+        rank = cur.fetchall()
         return jsonify(rank)
     except Exception as e:
+        print(e)
         return jsonify({"message": "Error getting rank"})
 
 
@@ -179,6 +184,7 @@ def insert_pos():
         cur.close()
         return jsonify({"message": "Position inserted"})
     except Exception as e:
+        print(e)
         return jsonify({"message": "Error inserting position"})
 
 

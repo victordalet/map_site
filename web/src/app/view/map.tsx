@@ -3,16 +3,29 @@ import {ViewProps} from "../types/map";
 import {MapComponents} from "../../component/map";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+
 export class MapView extends React.Component <ViewProps> {
     render() {
+
+        const {data, addPosition} = this.props;
+
         return (
             <div className={"map"}>
                 <div className={"add-container"}>
                     <h2>Add city : </h2>
-                    <TextField id="outlined-basic" label="City" variant="outlined"/>
-                    <Button variant="contained">Add</Button>
+                    <TextField id="outlined-basic" className={"city-input"} label="City" variant="outlined"/>
+                    <Button onClick={() => {
+                        addPosition();
+                    }} variant="contained">Add</Button>
                 </div>
-                <MapComponents dataCoordinate={[{lat: 48.8566, long: 2.3522, city: 'Paris'}, {lat: 51.5074, long: 0.1278, city: 'London'}, {lat: 40.7128, long: -74.0060, city: 'New York'}]}/>
+                <MapComponents dataCoordinate={data.map((item) => {
+                    return {
+                        lat: item.latitude,
+                        lng: item.longitude,
+                        city: item.point
+                    }
+                })}
+                />
             </div>
         );
     }

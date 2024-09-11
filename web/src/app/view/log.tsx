@@ -25,6 +25,7 @@ export class LogView extends React.Component <ViewProps> {
                     <Button
                         onClick={() => login()}
                         variant="contained"
+                        color="secondary"
                         className={"button-login"}>Log in</Button>
                 </div>
                 <div className={"wrapper-register"}>
@@ -35,6 +36,7 @@ export class LogView extends React.Component <ViewProps> {
                     <Button
                         onClick={() => register()}
                         variant="contained"
+                        color="secondary"
                         className={"button-register"}>Register</Button>
                 </div>
             </div>

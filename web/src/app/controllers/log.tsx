@@ -14,6 +14,18 @@ export default class LogController extends Component<
     model: LogModel = new LogModel();
 
 
+    constructor(props: ControllerProps) {
+        super(props);
+
+        setTimeout(() => {
+            document.querySelectorAll('button').forEach((button) => {
+                button.style.backgroundColor = '#ffecd1';
+                button.style.color = '#000';
+            });
+        }, 1);
+    }
+
+
     render() {
         return <LogView
             register={this.model.register}
