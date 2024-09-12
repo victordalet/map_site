@@ -1,7 +1,7 @@
 import ViewModel from '../view-model/map';
 
 export interface ViewProps {
-    data: ModelPosition[];
+    data: string[];
     addPosition: () => void;
 }
 
@@ -10,7 +10,7 @@ export interface ControllerProps {
 }
 
 export interface ControllerState {
-    data: ModelPosition[];
+    data: string[];
 }
 
 

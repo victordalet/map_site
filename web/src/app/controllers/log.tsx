@@ -16,7 +16,9 @@ export default class LogController extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
-
+        if (window.localStorage.getItem('token') !== null) {
+            document.location.href = '/map';
+        }
         setTimeout(() => {
             document.querySelectorAll('button').forEach((button) => {
                 button.style.backgroundColor = '#ffecd1';

@@ -20,6 +20,9 @@ export default class MapController extends Component<
 
     constructor(props: ControllerProps) {
         super(props);
+        if (window.localStorage.getItem('token') === null) {
+            window.location.href = '/login';
+        }
         this.model.getPosition().then((data) => {
             this.setState({data: data});
         });

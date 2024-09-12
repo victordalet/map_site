@@ -9,6 +9,7 @@ export class MapView extends React.Component <ViewProps> {
 
         const {data, addPosition} = this.props;
 
+
         return (
             <div className={"map"}>
                 <div className={"add-container"}>
@@ -20,9 +21,9 @@ export class MapView extends React.Component <ViewProps> {
                 </div>
                 <MapComponents dataCoordinate={data.map((item) => {
                     return {
-                        lat: item.latitude,
-                        lng: item.longitude,
-                        city: item.point
+                        lat: parseInt(item[2]),
+                        long: parseInt(item[3]),
+                        city: item[4]
                     }
                 })}
                 />

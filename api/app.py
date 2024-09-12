@@ -1,3 +1,4 @@
+import json
 import sys
 
 import requests
@@ -48,7 +49,10 @@ def register():
         city = data["city"]
         response = requests.get(
             f"https://nominatim.openstreetmap.org/search?addressdetails=1&q={city.replace(' ', '+')}&format=json")
-        response = response.json()
+        print(response.text)
+        print(response.json())
+        response = json.loads(response.text)
+        print(response.json())
         lat = response[0]["lat"]
         lon = response[0]["lon"]
         token = uuid.uuid4().hex
@@ -103,7 +107,7 @@ def check_connection():
     try:
         token = request.headers.get("Authorization")
         cur = mysql.connection.cursor()
-        cur.execute("SELECT name FROM user WHERE token = %s", (token,))
+        cur.execute("SELECT name FROM user WHERE token = %s", token)
         user = cur.fetchone()
         if not user:
             return {"is": False}
@@ -166,19 +170,19 @@ def insert_pos():
         city = data["city"]
         response = requests.get(
             f"https://nominatim.openstreetmap.org/search?addressdetails=1&q={city.replace(' ', '+')}&format=json")
-        response = response.json()
-        lat = response[0]["lat"]
-        lon = response[0]["lon"]
+        response = json.loads(response.text)
+        lat = response[0]['lat']
+        lon = response[0]['lon']
         token = request.headers.get("Authorization")
         cur = mysql.connection.cursor()
         cur.execute("SELECT name, latitude, longitude FROM user WHERE token = %s", (token,))
         user = cur.fetchone()
         if not user:
             return jsonify({"message": "User not found"})
-        points = (abs(user[0][1] - lat) + abs(user[0][2] - lon)) * 100 + 1
+        points = (abs(float(user[1]) - float(lat)) + abs(float(user[2]) - float(lon))) * 100 + 1
         cur.execute(
-            "INSERT INTO position (user, latitude, longitude,points) VALUES (%s, %s, %s, %s)",
-            (user[0][0], lat, lon, points)
+            "INSERT INTO city (user, latitude, longitude,points) VALUES (%s, %s, %s, %s)",
+            (user[0], lat, lon, points)
         )
         mysql.connection.commit()
         cur.close()
