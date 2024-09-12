@@ -3,7 +3,7 @@ import {registerResponse} from "../types/log";
 export class LogModel {
 
 
-    apiPath = 'http://localhost:3000/';
+    apiPath = 'https://apibmap.c2smr.fr/';
 
 
     public login = async () => {

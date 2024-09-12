@@ -5,7 +5,7 @@ export class MapModel {
     public getPosition = async (): Promise<string[]> => {
         const token = window.localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:3000/user_map', {
+            const response = await fetch('https://apibmap.c2smr.fr/user_map', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ export class MapModel {
         const city = document.querySelector<HTMLInputElement>('.city-input input')?.value;
         const token = window.localStorage.getItem('token');
         try {
-            await fetch('http://localhost:3000/insert_pos', {
+            await fetch('https://apibmap.c2smr.fr/insert_pos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
